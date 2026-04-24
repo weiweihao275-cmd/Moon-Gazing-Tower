@@ -16,7 +16,6 @@ services:
     volumes:
       - ./config:/app/config:ro
       - ./tools:/app/tools:ro
-      - ./web:/app/web:ro
       - app_logs:/app/logs
     environment:
       - CONFIG_PATH=/app/config/config.yaml
