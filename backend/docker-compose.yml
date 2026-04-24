@@ -17,9 +17,12 @@ services:
       - ./config:/app/config:ro
       - ./tools:/app/tools:ro
       - ./web:/app/web:ro
+      - app_logs:/app/logs
     environment:
       - CONFIG_PATH=/app/config/config.yaml
     command: ["/app/server"]
+    networks:
+      - moon_network
 
   mongo:
     image: mongo:5.0
@@ -37,16 +40,26 @@ services:
       timeout: 3s
       retries: 10
       start_period: 10s
+    networks:
+      - moon_network
 
   redis:
     image: redis:6-alpine
     container_name: moongazing_redis
     restart: unless-stopped
+    command: redis-server --appendonly yes
     volumes:
       - redis_data:/data
     ports:
       - "6379:6379"
+    networks:
+      - moon_network
 
 volumes:
   mongo_data:
   redis_data:
+  app_logs:
+
+networks:
+  moon_network:
+    driver: bridge
