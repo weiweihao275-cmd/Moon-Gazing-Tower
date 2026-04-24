@@ -16,8 +16,10 @@ WORKDIR /app
 
 COPY --from=builder /src/server /app/server
 COPY config /app/config
-COPY web /app/web
 COPY tools /app/tools
+
+# 可选：复制前端文件（如果存在）
+COPY web /app/web 2>/dev/null || true
 
 EXPOSE 8080
 CMD ["/app/server"]
